@@ -57,10 +57,11 @@ COPY examples ./examples
 # Build CASP
 RUN mkdir build && cd build && \
     cmake .. && \
-    make -j$(nproc)
+    make -j$(nproc) && \
+    cp llvm-sprofgen /usr/local/bin/
 
-# Add CASP tools to PATH
-ENV PATH="/casp/build:${PATH}"
+# Verify installation
+RUN llvm-sprofgen --help 2>&1 | head -5
 
 # Set the default command
 WORKDIR /casp/examples
