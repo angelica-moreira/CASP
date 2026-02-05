@@ -1,6 +1,7 @@
-FROM python:3.10-slim
+FROM ubuntu:24.04
 
 ENV TZ=UTC
+ENV DEBIAN_FRONTEND=noninteractive
 ENV CMAKE_VERSION=3.28.3
 
 # Install system dependencies for clang/LLVM and build tools
@@ -44,18 +45,24 @@ RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-20 100 && 
     update-alternatives --install /usr/bin/llvm-profdata llvm-profdata /usr/bin/llvm-profdata-20 100 && \
     update-alternatives --install /usr/bin/llvm-cov llvm-cov /usr/bin/llvm-cov-20 100
 
-# Set woring directory
-WORKDIR /work
+# Set working directory
+WORKDIR /casp
 
 # Copy project files
-COPY pyproject.toml ./
-COPY src ./src
+COPY CMakeLists.txt ./
+COPY include ./include
+COPY lib ./lib
+COPY examples ./examples
 
-# Upgrade pip and install Python dependencies from pyproject.toml
-RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
-    pip install --no-cache-dir -e .
+# Build CASP
+RUN mkdir build && cd build && \
+    cmake .. && \
+    make -j$(nproc)
+
+# Add CASP tools to PATH
+ENV PATH="/casp/build:${PATH}"
 
 # Set the default command
-ENTRYPOINT ["casp"]
-CMD ["--help"]
+WORKDIR /casp/examples
+CMD ["/bin/bash"]
 

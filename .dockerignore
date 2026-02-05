@@ -1,66 +1,42 @@
 # Git files
 .git
-.gitignore
 .gitattributes
 
 # GitHub files
 .github
 
-# Python cache and build artifacts
-__pycache__
+# Build artifacts (CMake/C++)
+build/
+*.o
+*.so
+*.a
+*.dylib
+
+# Python cache (if any Python scripts)
+__pycache__/
 *.pyc
 *.pyo
-*.pyd
-.Python
-*.so
-*.egg
-*.egg-info
-dist
-build
-eggs
-.eggs
-parts
-bin
-var
-sdist
-develop-eggs
-.installed.cfg
-lib
-lib64
-
-# Virtual environments
-.venv
-venv
-ENV
-env
 
 # IDE
-.vscode
-.idea
+.vscode/
+.idea/
 *.swp
 *.swo
 *~
 
-# Test and coverage
-.coverage
-.pytest_cache
-htmlcov
-.tox
+# Generated test outputs
+examples/*.ll
+examples/*.profdata
+examples/*.html
+examples/*_cov
+examples/*_exe
+examples/*_instr
+examples/test/
 
-# Documentation
-docs
-*.md
+# Documentation build outputs (keep source)
+docs/_build/
+docs/.doctrees/
 
-# Examples and tests (not needed in container)
-examples
-tests
-scripts
-
-# Helper scripts (not needed in container)
-run.sh
-test.sh
-run_regression_tests.sh
-helper.sh
-
-# License
-LICENSE
+# Temporary files
+*.log
+*.tmp
