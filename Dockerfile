@@ -37,13 +37,18 @@ RUN apt-get update && apt-get install -y \
     llvm-20-dev \
     llvm-20-tools \
     lld-20 \
+    liblld-20-dev \
  && rm -rf /var/lib/apt/lists/*
 
 # Make LLVM 20 default
 RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-20 100 && \
     update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-20 100 && \
     update-alternatives --install /usr/bin/llvm-profdata llvm-profdata /usr/bin/llvm-profdata-20 100 && \
-    update-alternatives --install /usr/bin/llvm-cov llvm-cov /usr/bin/llvm-cov-20 100
+    update-alternatives --install /usr/bin/llvm-cov llvm-cov /usr/bin/llvm-cov-20 100 && \
+    update-alternatives --install /usr/bin/llvm-config llvm-config /usr/bin/llvm-config-20 100
+
+# Set LLVM environment for CMake
+ENV LLVM_DIR=/usr/lib/llvm-20/lib/cmake/llvm
 
 # Set working directory
 WORKDIR /casp
